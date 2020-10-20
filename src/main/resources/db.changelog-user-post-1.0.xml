@@ -1,0 +1,54 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+   http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="1"  author="ievgen">
+        <createTable tableName="user-post">
+            <column name="id_user" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column  name="id_post" type="BIGINT">
+                <constraints  nullable="false" foreignKeyName="fk_user_post" references="post(id)"/>
+            </column>
+        </createTable>
+        <addUniqueConstraint
+                columnNames="id_user, id_post"
+                constraintName="post_unique"
+                tableName="user-post"
+        />
+    </changeSet>
+    
+
+    <changeSet id="2"  author="ievgen">
+        <insert tableName="user-post">
+            <column name="id_user" value="1"></column>
+            <column name="id_post" value="1"></column>
+        </insert>
+        <insert tableName="user-post">
+            <column name="id_user" value="1"></column>
+            <column name="id_post" value="2"></column>
+        </insert>
+        <insert tableName="user-post">
+            <column name="id_user" value="1"></column>
+            <column name="id_post" value="3"></column>
+        </insert>
+        <insert tableName="user-post">
+            <column name="id_user" value="2"></column>
+            <column name="id_post" value="1"></column>
+        </insert>
+        <insert tableName="user-post">
+            <column name="id_user" value="2"></column>
+            <column name="id_post" value="2"></column>
+        </insert>
+        <insert tableName="user-post">
+            <column name="id_user" value="3"></column>
+            <column name="id_post" value="1"></column>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

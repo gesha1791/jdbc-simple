@@ -1,0 +1,17 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+   http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <include file="src/main/resources/db.changelog-region-1.0.xml"></include>
+    <include file="src/main/resources/db.changelog-post-1.0.xml"></include>
+    <include file="src/main/resources/db.changelog-role-1.0.xml"></include>
+    <include file="src/main/resources/db.changelog-user-post-1.0.xml"></include>
+    <include file="src/main/resources/db.changelog-user-1.0.xml"></include>
+
+
+</databaseChangeLog>

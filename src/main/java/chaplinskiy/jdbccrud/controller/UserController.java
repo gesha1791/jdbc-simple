@@ -24,4 +24,12 @@ public class UserController {
     public void deleteById(Long id) {
         userService.deleteById(id);
     }
+
+    public void createUser(User user, int id) {
+        userService.createUser(user, id);
+    }
+
+    public void updateUser(User userUpdate, Long regionIdUpdate) {
+        userService.updateUser(userUpdate, regionIdUpdate);
+    }
 }

@@ -1,6 +1,6 @@
 package chaplinskiy.jdbccrud.repository.jdbc;
 
-import chaplinskiy.jdbccrud.controller.UserController;
+import chaplinskiy.jdbccrud.model.Post;
 import chaplinskiy.jdbccrud.model.Region;
 import chaplinskiy.jdbccrud.model.Role;
 import chaplinskiy.jdbccrud.model.User;
@@ -22,70 +22,34 @@ public class UserRepositoryJDBC implements UserRepository {
 
     @Override
     public User create(User user) {
-        return null;
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(createUserSQL);
+            preparedStatement.setString(1, user.getFirstName());
+            preparedStatement.setString(2, user.getLastName());
+            preparedStatement.setLong(3, user.getRegion().getId());
+            if (user.getRole().name().equals("USER")) {
+                preparedStatement.setLong(4, 3);
+            }
+
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return user;
     }
+
 
     @Override
     public User update(User user) {
-        return null;
-    }
-
-    @Override
-    public User getById(Long id) {
-        User user = new User();
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(getUserSQL);
-            preparedStatement.setLong(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            PreparedStatement preparedStatementRole = connection.prepareStatement(getRoleById);
-            PreparedStatement preparedStatementRegion = connection.prepareStatement(getRegionSQL);
+            PreparedStatement preparedStatement = connection.prepareStatement(updateUserSQL);
+            preparedStatement.setString(1, user.getFirstName());
+            preparedStatement.setString(2, user.getLastName());
+            preparedStatement.setLong(3, user.getRegion().getId());
+            preparedStatement.setLong(4, user.getId());
 
-            if(resultSet.next()){
-                Long idUser = resultSet.getLong("id");
-                String firstName = resultSet.getString("firstName");
-                String lastName = resultSet.getString("lastName");
-                long region_id = resultSet.getLong("region_id");
-                long role_id = resultSet.getLong("role_id");
-
-                preparedStatementRegion.setLong(1, region_id);
-
-                ResultSet resultSetRegion = preparedStatementRegion.executeQuery();
-                Region region = new Region();
-                while (resultSetRegion.next()){
-                    long idRegion = resultSetRegion.getLong("id");
-                    String name = resultSetRegion.getString("name");
-
-                    region = new Region(idRegion, name);
-                }
-
-
-
-                preparedStatementRole.setLong(1, role_id);
-                ResultSet resultSetRole = preparedStatementRole.executeQuery();
-                String role = "";
-                while (resultSetRole.next()){
-                    role = resultSetRole.getString("role");
-                }
-
-
-                // @ToDo dont get list post
-                user.setId(idUser);
-                user.setFirstName(firstName);
-                user.setLastName(lastName);
-                user.setLastName(lastName);
-                user.setRegion(region);
-
-                if (role.equals(Role.ADMIN.toString())){
-                    user.setRole(Role.ADMIN);
-                }
-                if (role.equals(Role.MODERATOR.toString())){
-                    user.setRole(Role.MODERATOR);
-                }
-                if (role.equals(Role.USER.toString())){
-                    user.setRole(Role.USER);
-                }
-            }
-
+            preparedStatement.executeUpdate();
             preparedStatement.close();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -94,54 +58,34 @@ public class UserRepositoryJDBC implements UserRepository {
     }
 
     @Override
-    public List<User> getAll() {
-        List<User> users = new ArrayList<>();
+    public User getById(Long id) {
+        PreparedStatement preparedStatementUser = null;
+        PreparedStatement preparedStatementPost = null;
 
-        Statement statement = null;
-        ResultSet resultSet = null;
+        User user = new User();
 
         try {
-            statement = connection.createStatement();
-            resultSet = statement.executeQuery(getAllUserSQL);
 
-            PreparedStatement preparedStatementRole = connection.prepareStatement(getRoleById);
-            PreparedStatement preparedStatementRegion = connection.prepareStatement(getRegionSQL);
+            preparedStatementUser = connection.prepareStatement(getUserById);
+            preparedStatementPost = connection.prepareStatement(getAllPostUserByID);
 
-            while (resultSet.next()){
-                Long id = resultSet.getLong("id");
-                String firstName = resultSet.getString("firstName");
-                String lastName = resultSet.getString("lastName");
-                long region_id = resultSet.getLong("region_id");
-                long role_id = resultSet.getLong("role_id");
+            preparedStatementUser.setLong(1, id);
+            preparedStatementPost.setLong(1, id);
 
-                preparedStatementRegion.setLong(1, region_id);
+            ResultSet resultSetUser = preparedStatementUser.executeQuery();
 
-                ResultSet resultSetRegion = preparedStatementRegion.executeQuery();
-                Region region = new Region();
-                while (resultSetRegion.next()){
-                    long idRegion = resultSetRegion.getLong("id");
-                    String name = resultSetRegion.getString("name");
+            while (resultSetUser.next()){
+                Long idUser = resultSetUser.getLong("id");
+                String firstName = resultSetUser.getString("firstName");
+                String lastName = resultSetUser.getString("lastName");
+                String role = resultSetUser.getString("role");
+                String region = resultSetUser.getString("name");
 
-                    region = new Region(idRegion, name);
-                }
-
-
-
-                preparedStatementRole.setLong(1, role_id);
-                ResultSet resultSetRole = preparedStatementRole.executeQuery();
-                String role = "";
-                while (resultSetRole.next()){
-                    role = resultSetRole.getString("role");
-                }
-
-
-                // @ToDo dont get list post
-                User user = new User();
-                user.setId(id);
+                user.setId(idUser);
                 user.setFirstName(firstName);
                 user.setLastName(lastName);
                 user.setLastName(lastName);
-                user.setRegion(region);
+                user.setRegion(new Region(region));
 
                 if (role.equals(Role.ADMIN.toString())){
                     user.setRole(Role.ADMIN);
@@ -153,13 +97,82 @@ public class UserRepositoryJDBC implements UserRepository {
                     user.setRole(Role.USER);
                 }
 
-                users.add(user);
 
+                ResultSet resultSetPost = preparedStatementPost.executeQuery();
+                List<Post> posts = new ArrayList<>();
+                while (resultSetPost.next()){
+                    Post post = new Post();
+                    post.setId(resultSetPost.getLong("id"));
+                    post.setContent(resultSetPost.getString("content"));
+                    posts.add(post);
+                }
+
+                user.setPosts(posts);
+            }
+
+            preparedStatementPost.close();
+            preparedStatementUser.close();
+
+        } catch (SQLException throwables) {
+
+            throwables.printStackTrace();
+        }
+        return user;
+    }
+    @Override
+    public List<User> getAll() {
+        List<User> users = new ArrayList<>();
+
+        Statement statement = null;
+        ResultSet resultSet = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(getAllUserSQL);
+            preparedStatement = connection.prepareStatement(getAllPostUserByID);
+
+            while (resultSet.next()){
+                Long id = resultSet.getLong("id");
+                String firstName = resultSet.getString("firstName");
+                String lastName = resultSet.getString("lastName");
+                String role = resultSet.getString("role");
+                String region = resultSet.getString("name");
+
+                User user = new User();
+                user.setId(id);
+                user.setFirstName(firstName);
+                user.setLastName(lastName);
+                user.setLastName(lastName);
+                user.setRegion(new Region(region));
+
+                if (role.equals(Role.ADMIN.toString())){
+                    user.setRole(Role.ADMIN);
+                }
+                if (role.equals(Role.MODERATOR.toString())){
+                    user.setRole(Role.MODERATOR);
+                }
+                if (role.equals(Role.USER.toString())){
+                    user.setRole(Role.USER);
+                }
+
+                preparedStatement.setLong(1,user.getId());
+
+                ResultSet resultSetPost = preparedStatement.executeQuery();
+                List<Post> posts = new ArrayList<>();
+                while (resultSetPost.next()){
+                    Post post = new Post();
+                    post.setId(resultSetPost.getLong("id"));
+                    post.setContent(resultSetPost.getString("content"));
+                    posts.add(post);
+                }
+
+                user.setPosts(posts);
+
+                users.add(user);
             }
 
             statement.close();
-            preparedStatementRegion.close();
-            preparedStatementRole.close();
+            preparedStatement.close();
 
         } catch (SQLException throwables) {
 
@@ -170,7 +183,6 @@ public class UserRepositoryJDBC implements UserRepository {
 
     @Override
     public void deleteById(Long id) {
-        Statement statement = null;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(deleteUserSQL);
             preparedStatement.setLong(1, id);

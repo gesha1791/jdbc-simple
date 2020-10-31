@@ -1,10 +1,9 @@
 package chaplinskiy.jdbccrud.view;
 
-import chaplinskiy.jdbccrud.controller.RegionController;
 import chaplinskiy.jdbccrud.controller.UserController;
-import chaplinskiy.jdbccrud.model.Region;
 import chaplinskiy.jdbccrud.model.User;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Scanner;
 
@@ -33,17 +32,43 @@ public class UserView {
                     allUsers.stream().forEach(System.out::println);
                     break;
                 case 2:
-                    printMessage(createUpdateRegionNameMessage);
+                    printMessage(createFirstNameUser);
+                    String firstName = scanner.next();
+                    printMessage(createSecondNameUser);
+                    String lastName = scanner.next();
+                    printMessage(createRegionNameUser);
+                    int regionId = scanner.nextInt();
+
+                    User user = new User();
+                    user.setFirstName(firstName);
+                    user.setLastName(lastName);
+
+                    userController.createUser(user, regionId);
 
                     break;
                 case 3:
-                    printMessage(idRegionMessage);
+                    printMessage(idUserMessage);
                     Long id = Long.valueOf(scanner.nextInt());
 
                     userController.deleteById(id);
                     break;
                 case 4:
                     printMessage(idUserMessage);
+                    Long idUpdate = Long.valueOf(scanner.nextInt());
+
+                    printMessage(createFirstNameUser);
+                    String firstNameUpdate = scanner.next();
+                    printMessage(createSecondNameUser);
+                    String lastNameUpdate = scanner.next();
+                    printMessage(createRegionNameUser);
+                    Long regionIdUpdate = Long.valueOf(scanner.nextInt());
+
+                    User userUpdate = new User();
+                    userUpdate.setId(idUpdate);
+                    userUpdate.setFirstName(firstNameUpdate);
+                    userUpdate.setLastName(lastNameUpdate);
+
+                    userController.updateUser(userUpdate, regionIdUpdate);
 
                     break;
                 case 5:
@@ -59,7 +84,7 @@ public class UserView {
                     start = false;
                     break;
                 default:
-                    printMessage(wrongRegionMessage);
+                    printMessage(wrongUserMessage);
             }
         }
     }

@@ -10,8 +10,8 @@
     <include file="src/main/resources/db.changelog-region-1.0.xml"></include>
     <include file="src/main/resources/db.changelog-post-1.0.xml"></include>
     <include file="src/main/resources/db.changelog-role-1.0.xml"></include>
-    <include file="src/main/resources/db.changelog-user-post-1.0.xml"></include>
     <include file="src/main/resources/db.changelog-user-1.0.xml"></include>
+    <include file="src/main/resources/db.changelog-user-post-1.0.xml"></include>
 
 
 </databaseChangeLog>

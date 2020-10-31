@@ -5,7 +5,7 @@ public final class Constants {
     static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
     static final String DATABASE_URL = "jdbc:mysql://localhost/crud";
     static final String USER = "root";
-    static final String PASSWORD = "6699551R0x";
+    static final String PASSWORD = "admin";
 
     // Runner view
     public static final String runnerViewMessage = "Hello, please enter number: \n"
@@ -28,13 +28,15 @@ public final class Constants {
     public static final String createUpdatePostValueMessage = "Please enter post value";
     public static final String idPostMessage = "Please enter id post";
 
-    // Post view
+    // User view
     public static final String userViewMessage = "Choose option for user, please : \n"
             + "1) Show all users\n" + "2) Create new user\n" + "3) Delete user\n" + "4) Update user\n"
             + "5) Get user\n" + "6) Back to menu";
     public static final String wrongUserMessage = "Wrong number\n" + "Enter number from 1 to 6";
-    public static final String createUpdateUserValueMessage = "Please enter post value";
-    public static final String idUserMessage = "Please enter id post";
+    public static final String createFirstNameUser = "Please enter firstName value";
+    public static final String createSecondNameUser = "Please enter secondName value";
+    public static final String createRegionNameUser = "Please enter region value";
+    public static final String idUserMessage = "Please enter id user";
 
 
 
@@ -54,15 +56,30 @@ public final class Constants {
     public static final String updatePostSQL = "UPDATE post SET content = ?, updated = ? WHERE ID = ?";
 
     // User database
-    public static final String getAllUserSQL = "SELECT * FROM user";
-    //public static final String createPostSQL = "INSERT INTO post (CONTENT, CREATED, UPDATED) VALUES (?, ?, ?)";
+    public static final String getAllUserSQL =
+            "SELECT user.id, user.firstName, user.lastName, " +
+                    "region.name, roleuser.role " +
+                    "FROM user " +
+                    "JOIN region ON region.id = user.region_id " +
+                    "JOIN roleuser ON roleuser.id = user.role_id";
+
+    public static final String getAllPostUserByID = "SELECT post.id, post.content" +
+            " FROM user " +
+            "JOIN user_post ON user.id = user_post.id_user " +
+            "JOIN post ON post.id = user_post.id_post " +
+            "WHERE user.id = (?)";
+
+    public static final String getUserById =
+            "SELECT user.id, user.firstName, user.lastName, " +
+                    "region.name, roleuser.role " +
+                    "FROM user " +
+                    "JOIN region ON region.id = user.region_id " +
+                    "JOIN roleuser ON roleuser.id = user.role_id " +
+                    "WHERE user.id = (?)";
+
     public static final String deleteUserSQL = "DELETE FROM user WHERE ID = (?)";
-    public static final String getUserSQL = "SELECT * FROM user WHERE ID = (?)";
-    //public static final String updatePostSQL = "UPDATE post SET content = ?, updated = ? WHERE ID = ?";
 
-    //  Role database
-    public static final String getRoleById = "SELECT * FROM roleuser WHERE id = ?";
-
-
+    public static final String createUserSQL = "INSERT INTO user (firstName, lastName, region_id, role_id) VALUES (?, ?, ?, ?)";
+    public static final String updateUserSQL = "UPDATE user SET firstName = (?), lastName = (?), region_id = (?) WHERE ID = (?)";
 
 }

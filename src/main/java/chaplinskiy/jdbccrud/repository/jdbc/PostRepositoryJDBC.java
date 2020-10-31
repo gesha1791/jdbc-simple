@@ -29,6 +29,7 @@ public class PostRepositoryJDBC implements PostRepository {
             preparedStatement.setString(1, post.getContent());
             preparedStatement.setTimestamp(2, Timestamp.valueOf(post.getCreate()));
             preparedStatement.setTimestamp(3,  Timestamp.valueOf(post.getUpdated()));
+            preparedStatement.executeUpdate();
             preparedStatement.close();
         } catch (SQLException throwables) {
             throwables.printStackTrace();

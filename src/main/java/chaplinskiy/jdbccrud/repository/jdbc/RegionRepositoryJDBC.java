@@ -23,16 +23,17 @@ public class RegionRepositoryJDBC implements RegionRepository {
 
     @Override
     public Region create(Region region) {
+
         Statement statement = null;
+        Region regionCreate = new Region();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(createRegionSQL);
-            preparedStatement.setString(1, region.getName());
-            int resultSet = preparedStatement.executeUpdate();
+            preparedStatement.setLong(1, region.getId());
             preparedStatement.close();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        return region;
+        return regionCreate;
     }
 
     @Override

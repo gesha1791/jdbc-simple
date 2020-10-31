@@ -8,44 +8,45 @@
    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
     <changeSet id="1"  author="ievgen">
-        <createTable tableName="user-post">
+        <createTable tableName="user_post">
             <column name="id_user" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
             <column  name="id_post" type="BIGINT">
-                <constraints  nullable="false" foreignKeyName="fk_user_post" references="post(id)"/>
+                <constraints  nullable="false"/>
             </column>
         </createTable>
-        <addUniqueConstraint
-                columnNames="id_user, id_post"
-                constraintName="post_unique"
-                tableName="user-post"
-        />
-    </changeSet>
-    
+        
+        <addForeignKeyConstraint baseTableName="user_post" baseColumnNames="id_user" constraintName="fk_user-post_user_id" referencedTableName="user"
+                                 referencedColumnNames="id" onDelete="CASCADE"/>
+        <addForeignKeyConstraint baseTableName="user_post" baseColumnNames="id_post" constraintName="fk_post-post_user_id" referencedTableName="post"
+                                 referencedColumnNames="id"/>
 
-    <changeSet id="2"  author="ievgen">
-        <insert tableName="user-post">
+    </changeSet>
+
+
+    <changeSet id="3"  author="ievgen">
+        <insert tableName="user_post">
             <column name="id_user" value="1"></column>
             <column name="id_post" value="1"></column>
         </insert>
-        <insert tableName="user-post">
+        <insert tableName="user_post">
             <column name="id_user" value="1"></column>
             <column name="id_post" value="2"></column>
         </insert>
-        <insert tableName="user-post">
+        <insert tableName="user_post">
             <column name="id_user" value="1"></column>
             <column name="id_post" value="3"></column>
         </insert>
-        <insert tableName="user-post">
+        <insert tableName="user_post">
             <column name="id_user" value="2"></column>
             <column name="id_post" value="1"></column>
         </insert>
-        <insert tableName="user-post">
+        <insert tableName="user_post">
             <column name="id_user" value="2"></column>
             <column name="id_post" value="2"></column>
         </insert>
-        <insert tableName="user-post">
+        <insert tableName="user_post">
             <column name="id_user" value="3"></column>
             <column name="id_post" value="1"></column>
         </insert>

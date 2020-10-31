@@ -1,7 +1,5 @@
 package chaplinskiy.jdbccrud.view;
 
-import com.sun.java.accessibility.AccessBridge;
-
 import java.util.Scanner;
 
 import static chaplinskiy.jdbccrud.util.Constants.runnerViewMessage;

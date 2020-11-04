@@ -2,7 +2,7 @@ package chaplinskiy.jdbccrud.service;
 
 import chaplinskiy.jdbccrud.model.Region;
 import chaplinskiy.jdbccrud.repository.RegionRepository;
-import chaplinskiy.jdbccrud.repository.jdbc.RegionRepositoryJDBC;
+import chaplinskiy.jdbccrud.repository.hibernate.RegionRepositoryHibernate;
 
 import java.util.List;
 
@@ -10,7 +10,8 @@ public class RegionService {
     private final RegionRepository regionRepository;
 
     public RegionService(){
-        regionRepository = new RegionRepositoryJDBC();
+        regionRepository = new RegionRepositoryHibernate() {
+        };
     }
 
     public List<Region> getAll() {

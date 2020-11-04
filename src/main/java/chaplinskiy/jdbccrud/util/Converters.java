@@ -8,5 +8,4 @@ public class Converters {
         return new java.sql.Timestamp(
                 dateToConvert.getTime()).toLocalDateTime();
     }
-
 }

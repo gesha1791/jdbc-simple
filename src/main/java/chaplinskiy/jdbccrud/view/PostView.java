@@ -30,7 +30,6 @@ public class PostView {
             switch (number) {
                 case 1:
                     List<Post> allPosts = postController.getAllPosts();
-
                     allPosts.stream().forEach(System.out::println);
                     break;
                 case 2:

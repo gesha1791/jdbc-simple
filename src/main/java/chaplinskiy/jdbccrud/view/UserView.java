@@ -1,6 +1,7 @@
 package chaplinskiy.jdbccrud.view;
 
 import chaplinskiy.jdbccrud.controller.UserController;
+import chaplinskiy.jdbccrud.model.Region;
 import chaplinskiy.jdbccrud.model.User;
 
 import java.time.LocalDateTime;
@@ -39,9 +40,13 @@ public class UserView {
                     printMessage(createRegionNameUser);
                     int regionId = scanner.nextInt();
 
+                    Region region = new Region();
+                    region.setId(Long.valueOf(regionId));
+
                     User user = new User();
                     user.setFirstName(firstName);
                     user.setLastName(lastName);
+                    user.setRegion(region);
 
                     userController.createUser(user, regionId);
 

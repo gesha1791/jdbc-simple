@@ -2,7 +2,7 @@ package chaplinskiy.jdbccrud.service;
 
 import chaplinskiy.jdbccrud.model.Post;
 import chaplinskiy.jdbccrud.repository.PostRepository;
-import chaplinskiy.jdbccrud.repository.jdbc.PostRepositoryJDBC;
+import chaplinskiy.jdbccrud.repository.hibernate.PostRepositiryHibernate;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -11,7 +11,7 @@ public class PostService {
     private final PostRepository postRepository;
 
     public PostService(){
-        postRepository = new PostRepositoryJDBC();
+        postRepository = new PostRepositiryHibernate();
     }
 
 

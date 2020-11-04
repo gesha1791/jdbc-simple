@@ -4,7 +4,6 @@ import java.util.Scanner;
 
 import static chaplinskiy.jdbccrud.util.Constants.runnerViewMessage;
 import static chaplinskiy.jdbccrud.util.Constants.wrongRunnerMessage;
-import static chaplinskiy.jdbccrud.util.DbConnection.closeConnection;
 import static chaplinskiy.jdbccrud.util.PrintUtils.printMessage;
 import static chaplinskiy.jdbccrud.util.ScannerSingleton.closeScanner;
 import static chaplinskiy.jdbccrud.util.ScannerSingleton.getScanner;
@@ -51,7 +50,6 @@ public class RunnerView {
                 case 4:
                     try {
                         closeScanner();
-                        closeConnection();
                     } catch (Exception e){
                         System.out.println(e);
                     }

@@ -19,24 +19,25 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false, nullable = false)
+    @ToString.Exclude
     private Long id;
     private String firstName;
     private String lastName;
 
-    @OneToMany
+    @OneToMany (fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
             name="user_post",
-            joinColumns = @JoinColumn( name="user_id"),
-            inverseJoinColumns = @JoinColumn( name="post_id")
+            joinColumns = @JoinColumn( name="id_user"),
+            inverseJoinColumns = @JoinColumn( name="id_post")
     )
+    @ToString.Exclude
     private List<Post> posts = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(
             name = "region_id",
             nullable = false
     )
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private Region region;
 
     @Enumerated(EnumType.STRING)

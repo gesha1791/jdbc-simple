@@ -37,6 +37,7 @@ public final class Constants {
     public static final String createSecondNameUser = "Please enter secondName value";
     public static final String createRegionNameUser = "Please enter region value";
     public static final String idUserMessage = "Please enter id user";
+    public static final String countUserPostMessage = "Please enter count posts for user";
 
 
 

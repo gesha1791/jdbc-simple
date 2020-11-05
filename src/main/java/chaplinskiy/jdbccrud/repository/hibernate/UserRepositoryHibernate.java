@@ -29,12 +29,32 @@ public class UserRepositoryHibernate implements UserRepository {
 
     @Override
     public User update(User user) {
-        return null;
+        Session session = getSessionFactory().openSession();
+        Transaction transaction = null;
+        transaction = session.beginTransaction();
+
+        User userUpdate = session.get(User.class, user.getId());
+        userUpdate.setRegion(user.getRegion());
+        userUpdate.setFirstName(user.getFirstName());
+        userUpdate.setLastName(user.getLastName());
+        userUpdate.setPosts(user.getPosts());
+
+        session.update(userUpdate);
+        transaction.commit();
+        session.close();
+        return userUpdate;
     }
 
     @Override
-    public User getById(Long aLong) {
-        return null;
+    public User getById(Long id) {
+        Session session = getSessionFactory().openSession();
+        Transaction transaction = null;
+
+        transaction = session.beginTransaction();
+        User user = (User) session.get(User.class, id);
+        transaction.commit();
+        session.close();
+        return user;
     }
 
     @Override
@@ -52,7 +72,15 @@ public class UserRepositoryHibernate implements UserRepository {
     }
 
     @Override
-    public void deleteById(Long aLong) {
+    public void deleteById(Long id) {
+        Session session = getSessionFactory().openSession();
+        Transaction transaction = null;
 
+        transaction = session.beginTransaction();
+        User user = (User) session.get(User.class, id);
+
+        session.delete(user);
+        transaction.commit();
+        session.close();
     }
 }

@@ -1,10 +1,12 @@
 package chaplinskiy.jdbccrud.view;
 
 import chaplinskiy.jdbccrud.controller.UserController;
+import chaplinskiy.jdbccrud.model.Post;
 import chaplinskiy.jdbccrud.model.Region;
 import chaplinskiy.jdbccrud.model.User;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -38,17 +40,33 @@ public class UserView {
                     printMessage(createSecondNameUser);
                     String lastName = scanner.next();
                     printMessage(createRegionNameUser);
-                    int regionId = scanner.nextInt();
-
+                    String regionName = scanner.next();
                     Region region = new Region();
-                    region.setId(Long.valueOf(regionId));
+                    region.setName(regionName);
+
+                    printMessage(countUserPostMessage);
+                    int countPost = scanner.nextInt();
+
+
+                    List<Post> posts = new ArrayList<>();
+                    for (int i = 0; i < countPost; i++) {
+                        Post post = new Post();
+                        printMessage(createUpdatePostValueMessage);
+                        String value = scanner.next();
+                        post.setContent(value);
+                        LocalDateTime now = LocalDateTime.now();
+                        post.setUpdated(now);
+                        post.setCreate(now);
+                        posts.add(post);
+                    }
 
                     User user = new User();
                     user.setFirstName(firstName);
                     user.setLastName(lastName);
                     user.setRegion(region);
+                    user.setPosts(posts);
 
-                    userController.createUser(user, regionId);
+                    userController.createUser(user);
 
                     break;
                 case 3:
@@ -66,14 +84,34 @@ public class UserView {
                     printMessage(createSecondNameUser);
                     String lastNameUpdate = scanner.next();
                     printMessage(createRegionNameUser);
-                    Long regionIdUpdate = Long.valueOf(scanner.nextInt());
+                    String regionNameUpdate = scanner.next();
+                    Region regionUpdate = new Region();
+                    regionUpdate.setName(regionNameUpdate);
+
+                    printMessage(countUserPostMessage);
+                    int countPostUpdate = scanner.nextInt();
+
+
+                    List<Post> postsUdate = new ArrayList<>();
+                    for (int i = 0; i < countPostUpdate; i++) {
+                        Post post = new Post();
+                        printMessage(createUpdatePostValueMessage);
+                        String value = scanner.next();
+                        post.setContent(value);
+                        LocalDateTime now = LocalDateTime.now();
+                        post.setUpdated(now);
+                        post.setCreate(now);
+                        postsUdate.add(post);
+                    }
 
                     User userUpdate = new User();
                     userUpdate.setId(idUpdate);
                     userUpdate.setFirstName(firstNameUpdate);
                     userUpdate.setLastName(lastNameUpdate);
+                    userUpdate.setRegion(regionUpdate);
+                    userUpdate.setPosts(postsUdate);
 
-                    userController.updateUser(userUpdate, regionIdUpdate);
+                    userController.updateUser(userUpdate);
 
                     break;
                 case 5:

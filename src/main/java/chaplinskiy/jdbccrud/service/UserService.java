@@ -33,21 +33,12 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public void createUser(User user, int id) {
-        Region region = new Region();
-        region.setId(Long.valueOf(id));
-      //  user.setRegion(region);
+    public void createUser(User user) {
         user.setRole(Role.USER);
         userRepository.create(user);
     }
 
-    public void updateUser(User userUpdate, Long regionIdUpdate) {
-        Region regionUpdate = new Region();
-        regionUpdate.setId(regionIdUpdate);
-
-       // userUpdate.setRegion(regionUpdate);
+    public void updateUser(User userUpdate) {
         userRepository.update(userUpdate);
-
-
     }
 }
